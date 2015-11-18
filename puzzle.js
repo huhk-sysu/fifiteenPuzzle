@@ -31,7 +31,7 @@ function createBoxes() {
         box.attr("id", "box" + i);
         container.append(box);
         if (i < 15) {
-            box.css("backgroundPosition", -90 * (i % 4) + "px " + -90 * Math.floor(i / 4) + "px");
+            box.css("backgroundPosition", -88 * (i % 4) + "px " + -88 * Math.floor(i / 4) + "px");
             globalVariable.positionX[i] = Math.floor(i / 4);
             globalVariable.positionY[i] = i % 4;
         }

@@ -89,7 +89,7 @@ span {
     width      : 88px;
     height     : 88px;
     border     : 1px solid gray;
-    background : white url("panda.jpg") no-repeat;
+    background : url("panda.jpg") no-repeat;
     transition : all 0.2s;
     z-index    : 0;
 }
