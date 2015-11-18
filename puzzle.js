@@ -92,6 +92,10 @@ function prepare() {
                     alert("你在" + globalVariable.timeCounter.toFixed(1) + "秒内走了" + globalVariable.moveCounter +  "步，最终获得了胜利！");
                     globalVariable.gameStatus = globalVariable.STOP;
                     clearInterval(globalVariable.timer);
+                    resign.attr("disabled", true);
+                    resign.addClass("disabled");
+                    restart.attr("disabled", false);
+                    restart.removeClass("disabled");
                 }
             }
         });
@@ -114,7 +118,9 @@ function prepare() {
         }
         globalVariable.gameStatus = globalVariable.RUNNING;
         globalVariable.moveCounter = 0;
+        $("#moveCounter").text("步数： " + globalVariable.moveCounter);
         globalVariable.timeCounter = 0;
+        $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
         restart.attr("disabled", true);
         restart.addClass("disabled");
         resign.attr("disabled", false);
@@ -167,5 +173,5 @@ function gameOver(boxes) {
 
 function update() {
     globalVariable.timeCounter += 0.1;
-    $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒")
+    $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
 }
