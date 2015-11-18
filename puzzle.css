@@ -11,19 +11,19 @@ h1 {
 
 /*容器和样例*/
 #puzzleAnaSample {
-    height :365px;
+    height : 365px;
 }
 
 #container {
-    border   : 1px solid black;
-    margin   : 0 auto;
-    position : relative;
-    width    : 360px;
-    height   : 360px;
-    float    : left;
+    border             : 1px solid black;
+    margin             : 0 auto;
+    position           : relative;
+    width              : 360px;
+    height             : 360px;
+    float              : left;
     -webkit-box-shadow : 8px 8px 5px gray;
-    -moz-box-shadow    : 8px 8px 5px gray;
     box-shadow         : 8px 8px 5px gray;
+    background-color   : #C8CCCD;
 }
 
 #panda {
@@ -32,8 +32,8 @@ h1 {
 
 /*下方按钮*/
 #buttons {
-    width  : 400px;
-    margin : 40px auto 10px;
+    width    : 400px;
+    margin   : 40px auto 10px;
     overflow : hidden;
 }
 
@@ -44,7 +44,6 @@ input {
     background-color   : dodgerblue;
     font-size          : 17pt;
     -webkit-box-shadow : 2px 2px 1px gray;
-    -moz-box-shadow    : 2px 2px 1px gray;
     box-shadow         : 2px 2px 1px gray;
     border             : none;
 }
@@ -60,7 +59,6 @@ input:active {
     -o-transform       : translate(2px, 2px);
     transform          : translate(2px, 2px);
     -webkit-box-shadow : none;
-    -moz-box-shadow    : none;
     box-shadow         : none;
 
 }
@@ -68,13 +66,13 @@ input:active {
 /*时间和分数*/
 
 span {
-    width  : 150px;
+    width : 150px;
 }
 
 #information {
-    width  : 400px;
-    margin : 0 auto;
-    font-size: 16pt;
+    width     : 400px;
+    margin    : 0 auto;
+    font-size : 16pt;
 }
 
 #time, #restart {
@@ -82,7 +80,7 @@ span {
 }
 
 #moveCounter, #resign {
-    margin-left :80px;
+    margin-left : 80px;
 }
 
 /*小方格的设定*/
@@ -91,7 +89,7 @@ span {
     width      : 88px;
     height     : 88px;
     border     : 1px solid gray;
-    background : url("panda.jpg") no-repeat;
+    background : white url("panda.jpg") no-repeat;
     transition : all 0.2s;
     z-index    : 0;
 }
