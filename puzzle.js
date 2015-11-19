@@ -13,7 +13,8 @@ var globalVariable = {
     moveCounter : 0,
     timeCounter : 0,
     timer : -1,
-    solution : []
+    solution : [],
+    clickValid : true
 };
 
 $(document).ready(function () {
@@ -25,15 +26,19 @@ function createBoxes() {
     var panda = $("img");
     var container = $("<div id='container'></div>");
     var box;
+    var x, y;
     for (var i = 0; i < 16; ++i) {
-        box = $("<div class='box'></div>");
-        box.addClass("position" + i);
+        x = Math.floor(i / 4);
+        y = i % 4;
+        box = $("<div class='box'>" + (i + 1) + "</div>");
+        box.addClass("top" + x);
+        box.addClass("left" + y);
         box.attr("id", "box" + i);
         container.append(box);
         if (i < 15) {
-            box.css("backgroundPosition", -88 * (i % 4) + "px " + -88 * Math.floor(i / 4) + "px");
-            globalVariable.positionX[i] = Math.floor(i / 4);
-            globalVariable.positionY[i] = i % 4;
+            box.css("backgroundPosition", -88 * y + "px " + -88 * x + "px");
+            globalVariable.positionX[i] = x;
+            globalVariable.positionY[i] = y;
         }
     }
     panda.before(container);
@@ -41,28 +46,36 @@ function createBoxes() {
 
 function prepare() {
     var boxes = $(".box");
+    var restart = $("#restart");
+    var resign = $("#resign");
     for (var i = 0; i < boxes.length - 1; ++i) {
         // 方块的点击事件在游戏停止时不反应
         // 仅当游戏进行时有胜利判定
+        boxes.eq(i).mousedown(function () {
+            if (globalVariable.gameStatus == globalVariable.DEMOING) {
+                alert("请耐心等待演示完成！");
+                globalVariable.clickValid = false;
+            }
+        });
         boxes.eq(i).click(function () {
-            if (globalVariable.gameStatus == globalVariable.STOP)
+            if (globalVariable.gameStatus == globalVariable.STOP || !globalVariable.clickValid)
                 return;
             var myId = parseInt(this.id.substring(3));
-            // 这里的Number代表位置的编号
             var ok = canMove(myId);
             if (ok) {
-                var myNumber = globalVariable.positionX[myId] * 4 + globalVariable.positionY[myId];
-                var myClass = "position" + myNumber;
-                var myself = $("." + myClass);
-                var targetNumber = globalVariable.freeX * 4 + globalVariable.freeY;
-                var targetClass = "position" + targetNumber;
-                var target = $("." + targetClass);
-
                 // change position
-                target.addClass(myClass);
-                target.removeClass(targetClass);
-                myself.addClass(targetClass);
-                myself.removeClass(myClass);
+                // 先移除后添加
+                var target = $("#box15");
+                var myself = $("#box" + myId);
+                target.removeClass("left" + globalVariable.freeY);
+                target.removeClass("top" + globalVariable.freeX);
+                target.addClass("left" + globalVariable.positionY[myId]);
+                target.addClass("top" + globalVariable.positionX[myId]);
+                myself.removeClass("left" + globalVariable.positionY[myId]);
+                myself.removeClass("top" + globalVariable.positionX[myId]);
+                myself.addClass("left" + globalVariable.freeY);
+                myself.addClass("top" + globalVariable.freeX);
+
 
                 // change data
                 var temp;
@@ -86,24 +99,17 @@ function prepare() {
                     } else {
                         globalVariable.solution.push(myId);
                     }
-                }
-
-                if (globalVariable.gameStatus == globalVariable.RUNNING && gameOver(boxes)) {
-                    alert("你在" + globalVariable.timeCounter.toFixed(1) + "秒内走了" + globalVariable.moveCounter +  "步，最终获得了胜利！");
-                    globalVariable.gameStatus = globalVariable.STOP;
-                    clearInterval(globalVariable.timer);
-                    resign.attr("disabled", true);
-                    resign.addClass("disabled");
-                    restart.attr("disabled", false);
-                    restart.removeClass("disabled");
+                    if (gameOver(boxes)) {
+                        alert("你在" + globalVariable.timeCounter.toFixed(1) + "秒内走了" + globalVariable.moveCounter +  "步，最终获得了胜利！");
+                        globalVariable.gameStatus = globalVariable.STOP;
+                        clearInterval(globalVariable.timer);
+                        restartValid(true);
+                    }
                 }
             }
         });
     }
     boxes.eq(15).hide();
-
-    var restart = $("#restart");
-    var resign = $("#resign");
 
     restart.click(function () {
         globalVariable.gameStatus = globalVariable.PREPARING;
@@ -121,10 +127,7 @@ function prepare() {
         $("#moveCounter").text("步数： " + globalVariable.moveCounter);
         globalVariable.timeCounter = 0;
         $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
-        restart.attr("disabled", true);
-        restart.addClass("disabled");
-        resign.attr("disabled", false);
-        resign.removeClass("disabled");
+        restartValid(false);
         globalVariable.timer = setInterval(update, 100);
     });
 
@@ -134,8 +137,15 @@ function prepare() {
         resign.addClass("disabled");
         clearInterval(globalVariable.timer);
         globalVariable.gameStatus = globalVariable.DEMOING;
-        globalVariable.timer = setInterval("demo()", 300);
+        globalVariable.timer = setInterval("demo()", 200);
     });
+
+    var mode = $("#mode");
+    mode.change(function () {
+        for (var i = 0; i < boxes.length - 1; ++i)
+            boxes.eq(i).toggleClass("boxNum");
+    });
+
     resign.attr("disabled", true);
     resign.addClass("disabled");
     globalVariable.gameStatus = globalVariable.STOP;
@@ -144,12 +154,14 @@ function prepare() {
 function demo() {
     var restart = $("#restart");
     var id = globalVariable.solution.pop();
+    globalVariable.clickValid = true;
     $("#box" + id).click();
     if (globalVariable.solution.length == 0) {
         clearInterval(globalVariable.timer);
         restart.attr("disabled", false);
         restart.removeClass("disabled");
         globalVariable.gameStatus = globalVariable.STOP;
+        globalVariable.clickValid = true;
     }
 }
 
@@ -165,7 +177,7 @@ function canMove(myId) {
 
 function gameOver(boxes) {
     for (var i = 0; i < boxes.length - 1; ++i) {
-        if (!boxes.eq(i).hasClass("position" + i))
+        if (!boxes.eq(i).hasClass("left" + i % 4) || !boxes.eq(i).hasClass("top" + Math.floor(i / 4)))
             return false;
     }
     return true;
@@ -174,4 +186,13 @@ function gameOver(boxes) {
 function update() {
     globalVariable.timeCounter += 0.1;
     $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
+}
+
+function restartValid(valid) {
+    var restart = $("#restart");
+    var resign = $("#resign");
+    restart.attr("disabled", !valid);
+    restart.toggleClass("disabled");
+    resign.attr("disabled", valid);
+    resign.toggleClass("disabled");
 }

@@ -37,7 +37,7 @@ h1 {
     overflow : hidden;
 }
 
-input {
+input[type = button] {
     color              : white;
     height             : 50px;
     width              : 150px;
@@ -48,7 +48,7 @@ input {
     border             : none;
 }
 
-.disabled {
+.disabled[type = button] {
     background-color : dimgray;
 }
 
@@ -83,6 +83,19 @@ span {
     margin-left : 80px;
 }
 
+#selectMode {
+    margin : 10px auto 0;
+    width :400px;
+    text-align : center;
+    vertical-align : text-bottom;
+    font-size: 20pt;
+    line-height :100%;
+}
+
+input[type=checkbox] {
+    width : 30px;
+    height : 30px;
+}
 
 /*小方格的设定*/
 .box {
@@ -93,6 +106,20 @@ span {
     background : url("panda.jpg") no-repeat;
     transition : all 0.2s;
     z-index    : 0;
+    vertical-align : middle;
+    text-align : center;
+    font-size: 0;
+    font-weight :bold;
+    line-height :88px;
+    -webkit-user-select : none;
+    -moz-user-select    : none;
+    -ms-user-select     : none;
+    user-select         : none;
+}
+
+.boxNum {
+    font-size: 30pt;
+    background : none;
 }
 
 .box:hover {
@@ -102,82 +129,36 @@ span {
 }
 
 /*以下是各个方格的位置*/
-.position0 {
+/*横*/
+.left0 {
     left : 0;
-    top  : 0;
 }
 
-.position1 {
+.left1 {
     left : 90px;
-    top  : 0;
 }
 
-.position2 {
+.left2 {
     left : 180px;
-    top  : 0;
 }
 
-.position3 {
+.left3 {
     left : 270px;
-    top  : 0;
 }
 
-.position4 {
-    left : 0;
-    top  : 90px;
+/*竖*/
+.top0 {
+    top : 0;;
 }
 
-.position5 {
-    left : 90px;
-    top  : 90px;
+.top1 {
+    top : 90px;;
 }
 
-.position6 {
-    left : 180px;
-    top  : 90px;
+.top2 {
+    top : 180px;
 }
 
-.position7 {
-    left : 270px;
-    top  : 90px;
-}
-
-.position8 {
-    left : 0;
-    top  : 180px;
-}
-
-.position9 {
-    left : 90px;
-    top  : 180px;
-}
-
-.position10 {
-    left : 180px;
-    top  : 180px;
-}
-
-.position11 {
-    left : 270px;
-    top  : 180px;
-}
-
-.position12 {
-    left : 0;
-    top  : 270px;
-}
-
-.position13 {
-    left : 90px;
-    top  : 270px;
-}
-
-.position14 {
-    left : 180px;
-    top  : 270px;
-}
-
-.position15 {
-    left : 270px;
-    top  : 270px;
+.top3 {
+    top : 270px;
 }
