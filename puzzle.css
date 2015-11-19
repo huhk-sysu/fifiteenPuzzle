@@ -83,6 +83,7 @@ span {
     margin-left : 80px;
 }
 
+
 /*小方格的设定*/
 .box {
     position   : absolute;
@@ -96,6 +97,7 @@ span {
 
 .box:hover {
     transform : scale(1.05);
+    -webkit-transform : scale(1.05);
     z-index   : 1;
 }
 
