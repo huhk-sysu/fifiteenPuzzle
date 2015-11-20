@@ -152,7 +152,8 @@ function demo() {
 
 function prepare() {
     "use strict";
-    var boxes = $(".box"), restart = $("#restart"), resign = $("#resign"), i, mode = $("#mode");
+    var boxes = $(".box"), restart = $("#restart"), resign = $("#resign"), mode = $("#mode"), picture = $("#panda"),
+        pictureSelector = $("#pictureSelector"), i;
 
     for (i = 0; i < boxes.length - 1; ++i) {
         // 方块的点击事件在游戏停止时不反应
@@ -193,6 +194,29 @@ function prepare() {
     mode.change(function () {
         for (i = 0; i < boxes.length - 1; ++i) {
             boxes.eq(i).toggleClass("boxNum");
+        }
+    });
+
+    pictureSelector.change(function () {
+        var index = this.selectedIndex;
+        if (index === 0) {
+            picture.attr("src", "images/panda.jpg");
+            for (i = 0; i < boxes.length - 1; ++i) {
+                boxes.eq(i).removeClass("boxPic2");
+                boxes.eq(i).removeClass("boxPic3");
+            }
+        } else if (index === 1) {
+            picture.attr("src", "images/meinv.jpg");
+            for (i = 0; i < boxes.length - 1; ++i) {
+                boxes.eq(i).addClass("boxPic2");
+                boxes.eq(i).removeClass("boxPic3");
+            }
+        } else {
+            picture.attr("src", "images/wangqing.jpg");
+            for (i = 0; i < boxes.length - 1; ++i) {
+                boxes.eq(i).removeClass("boxPic2");
+                boxes.eq(i).addClass("boxPic3");
+            }
         }
     });
 

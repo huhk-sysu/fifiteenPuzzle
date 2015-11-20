@@ -54,9 +54,7 @@ input[type = button] {
 
 input:active {
     -webkit-transform  : translate(2px, 2px);
-    -moz-transform     : translate(2px, 2px);
-    -ms-transform      : translate(2px, 2px);
-    -o-transform       : translate(2px, 2px);
+    -moz-transform     : translate(2px, 2px);;
     transform          : translate(2px, 2px);
     -webkit-box-shadow : none;
     box-shadow         : none;
@@ -65,7 +63,7 @@ input:active {
 
 /*时间和分数*/
 
-span {
+span, #chooseMode {
     width : 150px;
 }
 
@@ -75,7 +73,7 @@ span {
     font-size : 16pt;
 }
 
-#time, #restart {
+#time, #restart, #chooseMode {
     float : left;
 }
 
@@ -84,41 +82,45 @@ span {
 }
 
 #selectMode {
-    margin : 10px auto 0;
-    width :400px;
-    text-align : center;
-    vertical-align : text-bottom;
-    font-size: 20pt;
-    line-height :100%;
+    margin    : 10px auto 0;
+    width     :400px;
+    font-size : 16pt;
 }
 
-input[type=checkbox] {
-    width : 30px;
-    height : 30px;
+#choosePicture {
+    width : 180px;
+    float : right;
 }
 
 /*小方格的设定*/
 .box {
-    position   : absolute;
-    width      : 88px;
-    height     : 88px;
-    border     : 1px solid gray;
-    background : url("panda.jpg") no-repeat;
-    transition : all 0.2s;
-    z-index    : 0;
-    vertical-align : middle;
-    text-align : center;
-    font-size: 0;
-    font-weight :bold;
-    line-height :88px;
+    position            : absolute;
+    width               : 88px;
+    height              : 88px;
+    border              : 1px solid gray;
+    background          : url("images/panda.jpg");
+    transition          : all 0.2s;
+    z-index             : 0;
+    vertical-align      : middle;
+    text-align          : center;
+    font-size           : 0;
+    font-weight         :bold;
+    line-height         :88px;
     -webkit-user-select : none;
     -moz-user-select    : none;
-    -ms-user-select     : none;
     user-select         : none;
 }
 
+.boxPic2 {
+    background : url("images/meinv.jpg");
+}
+
+.boxPic3 {
+    background : url("images/wangqing.jpg");
+}
+
 .boxNum {
-    font-size: 30pt;
+    font-size  : 30pt;
     background : none;
 }
 

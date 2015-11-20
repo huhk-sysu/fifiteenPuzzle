@@ -12,13 +12,25 @@
             <h1>拼图游戏</h1>
 
             <div id="puzzleAnaSample">
-                <img src="panda.jpg" id="panda">
+                <img src="images/panda.jpg" id="panda">
             </div>
             <div id="buttons">
                 <input id="restart" type="button" value="开始游戏"><input id="resign" type="button" value="认输">
             </div>
             <div id="information"><span id="time">时间： 0.0秒</span><span id="moveCounter">步数： 0</span></div>
-            <div id="selectMode"><label for="mode">数字模式：</label><input type="checkbox" title="数字模式" id="mode"></div>
+            <div id="selectMode">
+                <div id="chooseMode">
+                    <label for="mode">数字模式：</label><input type="checkbox" title="数字模式" id="mode">
+                </div>
+                <div id="choosePicture">
+                    选择图片：
+                    <select name="picture" title="选择图片" id="pictureSelector">
+                        <option value="animal" selected="selected">动物</option>
+                        <option value="woman">美女</option>
+                        <option value="man">帅哥</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </body>
 </html>
