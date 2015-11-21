@@ -29,7 +29,7 @@ function createBoxes() {
         box.attr("id", "box" + i);
         container.append(box);
         if (i < 15) {
-            box.css("backgroundPosition", -88 * y + "px " + -88 * x + "px");
+            box.addClass("pos" + i);
             globalVariable.positionX[i] = x;
             globalVariable.positionY[i] = y;
         }
