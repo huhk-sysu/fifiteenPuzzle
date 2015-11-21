@@ -59,11 +59,12 @@ function canMove(myId) {
 
 function restartValid(valid) {
     "use strict";
-    var restart = $("#restart"), resign = $("#resign");
+    var restart = $("#restart"), resign = $("#resign"), pictureSelector = $("#pictureSelector");
     restart.attr("disabled", !valid);
     restart.toggleClass("disabled");
     resign.attr("disabled", valid);
     resign.toggleClass("disabled");
+    pictureSelector.attr("disabled", !valid);
 }
 
 function gameOver(boxes) {
@@ -138,12 +139,13 @@ function update() {
 
 function demo() {
     "use strict";
-    var restart = $("#restart"), id = globalVariable.solution.pop();
+    var restart = $("#restart"), id = globalVariable.solution.pop(), pictureSelector = $("#pictureSelector");
     globalVariable.clickValid = true;
     $("#box" + id).click();
     if (globalVariable.solution.length === 0) {
         clearInterval(globalVariable.timer);
         restart.attr("disabled", false);
+        pictureSelector.attr("disabled", false);
         restart.removeClass("disabled");
         globalVariable.gameStatus = globalVariable.STOP;
         globalVariable.clickValid = true;
@@ -164,6 +166,7 @@ function prepare() {
     boxes.eq(15).hide();
 
     restart.click(function () {
+        globalVariable.solution = [];
         globalVariable.gameStatus = globalVariable.PREPARING;
         var counter = 0, rand, times = Math.floor(Math.random() * 20) + 40;  // move 40~60 times
         while (counter < times) {
@@ -173,6 +176,7 @@ function prepare() {
                 ++counter;
             }
         }
+        console.log(globalVariable.solution.length);
         globalVariable.gameStatus = globalVariable.RUNNING;
         globalVariable.moveCounter = 0;
         $("#moveCounter").text("步数： " + globalVariable.moveCounter);
@@ -188,7 +192,7 @@ function prepare() {
         resign.addClass("disabled");
         clearInterval(globalVariable.timer);
         globalVariable.gameStatus = globalVariable.DEMOING;
-        globalVariable.timer = setInterval(demo, 200);
+        globalVariable.timer = setInterval(demo, 100);
     });
 
     mode.change(function () {
