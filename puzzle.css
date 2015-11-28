@@ -98,7 +98,6 @@ span, #chooseMode {
     width               : 88px;
     height              : 88px;
     border              : 1px solid gray;
-    background          : url("images/panda.jpg");
     transition          : all 0.2s;
     z-index             : 0;
     vertical-align      : middle;
@@ -109,6 +108,10 @@ span, #chooseMode {
     -webkit-user-select : none;
     -moz-user-select    : none;
     user-select         : none;
+}
+
+.boxPic1 {
+    background : url("images/panda.jpg");
 }
 
 .boxPic2 {

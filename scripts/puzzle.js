@@ -14,27 +14,24 @@ var globalVariable = {
     timeCounter: 0,
     timer: -1,
     solution: [],
-    clickValid: true
+    clickValid: true,
+    pictureUrl: ["images/panda.jpg", "images/meinv.jpg", "images/wangqing.jpg"]
 };
 
 function createBoxes() {
     "use strict";
-    var panda = $("img"), container = $("<div id='container'></div>"), i, x, y, box;
-    for (i = 0; i < 16; ++i) {
+    var img = $("img"), container = $("<div id='container'></div>"), x, y, box;
+    _.times(16, function (i) {
         x = Math.floor(i / 4);
         y = i % 4;
         box = $("<div class='box'>" + (i + 1) + "</div>");
-        box.addClass("top" + x);
-        box.addClass("left" + y);
+        box.addClass("top" + x + " " + "left" + y + " " + "pos" + i + " " + "boxPic1");
         box.attr("id", "box" + i);
         container.append(box);
-        if (i < 15) {
-            box.addClass("pos" + i);
-            globalVariable.positionX[i] = x;
-            globalVariable.positionY[i] = y;
-        }
-    }
-    panda.before(container);
+        globalVariable.positionX[i] = x;
+        globalVariable.positionY[i] = y;
+    });
+    img.before(container);
 }
 
 function demoMouseDown() {
@@ -152,71 +149,76 @@ function demo() {
     }
 }
 
+function randomMove() {
+    "use strict";
+    var boxes = $(".box"), counter = 0, rand, times = _.random(40, 60);  // move 40~60 times
+    while (counter < times) {
+        rand = _.random(0, 14);
+        if (rand !== globalVariable.solution[globalVariable.solution.length - 1] && canMove(rand)) {  // 不重复动2次同一个
+            boxes.eq(rand).click();
+            ++counter;
+        }
+    }
+}
+
+function restartClick() {
+    "use strict";
+    globalVariable.solution = [];
+    globalVariable.gameStatus = globalVariable.PREPARING;
+    randomMove();
+    globalVariable.gameStatus = globalVariable.RUNNING;
+    globalVariable.moveCounter = 0;
+    $("#moveCounter").text("步数： " + globalVariable.moveCounter);
+    globalVariable.timeCounter = 0;
+    $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
+    restartValid(false);
+    globalVariable.timer = setInterval(update, 100);
+}
+
+function resignClick() {
+    "use strict";
+    var resign = $("#resign");
+    alert("你在" + globalVariable.timeCounter.toFixed(1) + "秒内走了" + globalVariable.moveCounter + "步，下次继续加油吧！");
+    resign.attr("disabled", true);
+    resign.addClass("disabled");
+    clearInterval(globalVariable.timer);
+    globalVariable.gameStatus = globalVariable.DEMOING;
+    globalVariable.timer = setInterval(demo, 100);
+}
+
+
+
 function prepare() {
     "use strict";
     var boxes = $(".box"), restart = $("#restart"), resign = $("#resign"), mode = $("#mode"), picture = $("#panda"),
         pictureSelector = $("#pictureSelector"), i;
-
-    for (i = 0; i < boxes.length - 1; ++i) {
-        // 方块的点击事件在游戏停止时不反应
-        // 仅当游戏进行时有胜利判定
+    _.times(15, function (i) {
         boxes.eq(i).mousedown(demoMouseDown);
         boxes.eq(i).click(boxesClick(i));
-    }
+    });
     boxes.eq(15).hide();
-
-    restart.click(function () {
-        globalVariable.solution = [];
-        globalVariable.gameStatus = globalVariable.PREPARING;
-        var counter = 0, rand, times = Math.floor(Math.random() * 20) + 40;  // move 40~60 times
-        while (counter < times) {
-            rand = Math.floor(Math.random() * 15);
-            if (rand !== globalVariable.solution[globalVariable.solution.length - 1] && canMove(rand)) {  // 不重复动2次同一个
-                boxes.eq(rand).click();
-                ++counter;
-            }
-        }
-        console.log(globalVariable.solution.length);
-        globalVariable.gameStatus = globalVariable.RUNNING;
-        globalVariable.moveCounter = 0;
-        $("#moveCounter").text("步数： " + globalVariable.moveCounter);
-        globalVariable.timeCounter = 0;
-        $("#time").text("时间： " + globalVariable.timeCounter.toFixed(1) + "秒");
-        restartValid(false);
-        globalVariable.timer = setInterval(update, 100);
-    });
-
-    resign.click(function () {
-        alert("你在" + globalVariable.timeCounter.toFixed(1) + "秒内走了" + globalVariable.moveCounter + "步，下次继续加油吧！");
-        resign.attr("disabled", true);
-        resign.addClass("disabled");
-        clearInterval(globalVariable.timer);
-        globalVariable.gameStatus = globalVariable.DEMOING;
-        globalVariable.timer = setInterval(demo, 100);
-    });
-
+    restart.click(restartClick);
+    resign.click(resignClick);
     mode.change(function () {
-        for (i = 0; i < boxes.length - 1; ++i) {
+        _.times(15, function (i) {
             boxes.eq(i).toggleClass("boxNum");
-        }
+        });
     });
 
     pictureSelector.change(function () {
         var index = this.selectedIndex;
+        picture.attr("src", globalVariable.pictureUrl[index]);
         if (index === 0) {
-            picture.attr("src", "images/panda.jpg");
             for (i = 0; i < boxes.length - 1; ++i) {
                 boxes.eq(i).removeClass("boxPic2");
                 boxes.eq(i).removeClass("boxPic3");
             }
         } else if (index === 1) {
-            picture.attr("src", "images/meinv.jpg");
             for (i = 0; i < boxes.length - 1; ++i) {
                 boxes.eq(i).addClass("boxPic2");
                 boxes.eq(i).removeClass("boxPic3");
             }
         } else {
-            picture.attr("src", "images/wangqing.jpg");
             for (i = 0; i < boxes.length - 1; ++i) {
                 boxes.eq(i).removeClass("boxPic2");
                 boxes.eq(i).addClass("boxPic3");
